@@ -4,8 +4,21 @@
     <h1>My Cart</h1>
   </header>
 
+  <%if enhanced_cart.length() < 1%>
+  <div class="alert alert-info clearfix" role="alert">
+    <p class="pull-left">  Nothing seems to be in your cart! Trying coming back here later once you have selected things
+      to buy !
+    </p>
+    <%= link_to 'View Store', [:products], class: 'btn btn-primary pull-right ' %>
+ 
+
+  </div>
+
+  <%end%>
+
   <div class="panel panel-default items">
     <table class="table table-bordered">
+
       <thead>
         <tr>
           <th colspan="2">Product</th>
@@ -16,7 +29,7 @@
       </thead>
       <tbody>
         <% enhanced_cart.each do |item| %>
-          <%= render 'item', product: item[:product], quantity: item[:quantity].to_i %>
+        <%= render 'item', product: item[:product], quantity: item[:quantity].to_i %>
         <% end %>
       </tbody>
       <tfoot>
@@ -25,28 +38,24 @@
             TOTAL:
           </th>
           <th>
-            <%= cart_subtotal_cents / 100.0 %>
+            <%=humanized_money_with_symbol cart_subtotal_cents / 100.0 %>
           </th>
         </tr>
       </tfoot>
     </table>
   </div>
+  <%if enhanced_cart.length() >= 1%>
 
   <div class="row">
     <div class="col-xs-12">
       <%= form_tag orders_path do %>
-        <script
-          src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-          data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-          data-amount="<%= cart_subtotal_cents %>"
-          data-name="Jungle"
-          data-description="Khurram Virani's Jungle Order"
-          data-locale="auto"
-          data-email="kvirani@gmail.com"
-          data-currency="cad">
-        </script>
+      <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+        data-key="<%= Rails.configuration.stripe[:publishable_key] %>" data-amount="<%= cart_subtotal_cents %>"
+        data-name="Jungle" data-description="Khurram Virani's Jungle Order" data-locale="auto"
+        data-email="kvirani@gmail.com" data-currency="cad">
+      </script>
       <% end %>
     </div>
   </div>
-
+  <%end%>
 </section>
