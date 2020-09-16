@@ -4,6 +4,14 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
   end
 
+  # def enhanced_cart
+  #   @order_items = LineItem.where({order_id: @order})
+  #   puts @order_items.inspect
+  #   @enhanced_cart ||= Product.where(id: cart.keys).map {|product| { product:product, quantity: cart[product.id.to_s] } }
+  # end
+  # helper_method :enhanced_cart
+
+  
   def create
     charge = perform_stripe_charge
     order  = create_order(charge)
