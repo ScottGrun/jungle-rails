@@ -7,7 +7,14 @@ Rails.application.routes.draw do
 
   #working below
   get '/about', to: 'about#show'
+  get '/login' => 'sessions#new'
+  post '/login' => 'sessions#create'
+  get '/logout' => 'sessions#destroy'
 
+  get '/signup' => 'users#new'
+  post '/users' => 'users#create'
+  
+ 
   resource :cart, only: [:show] do
     post   :add_item
     post   :remove_item
@@ -19,6 +26,9 @@ Rails.application.routes.draw do
     root to: 'dashboard#show'
     resources :products, :categories,  except: [:edit, :update, :show]
   end
+
+
+
 
 
 
