@@ -4,7 +4,7 @@ RSpec.describe User, type: :model do
   describe 'Validations' do
     context 'has valid inputs' do
       it 'succesfully saves if given valid inputs' do
-        user = User.new(first_name:'Scott', last_name:'G', email:'test@example.com', password:'1234567', password_confirmation:'1234567')
+        user = User.new(first_name:'Scott', last_name:'G', email:'test1t@example.com', password:'1234567', password_confirmation:'1234567')
         expect(user).to be_valid
       end
 
@@ -28,7 +28,7 @@ RSpec.describe User, type: :model do
 
 
       it 'Throws error if password is too short' do
-        user = User.new(first_name:'Scott', last_name:'G', email:'test@example.com', password:'123', password_confirmation:'123')
+        user = User.new(first_name:'Scott', last_name:'G', email:'test@example.com', password:'123', password_confirmation:'1234567')
         user.save
 
         expect(user.errors.full_messages).to include("Password is too short (minimum is 6 characters)")
@@ -40,4 +40,15 @@ RSpec.describe User, type: :model do
  
     end
   end
+
+  describe 'Validations' do
+    context 'has valid inputs' do
+      it 'succesfully saves if given valid inputs' do
+        user = User.new(first_name:'Scott', last_name:'G', email:'test@example.com', password:'1234567', password_confirmation:'1234567')
+        user.save
+        expect(User.authenticate_with_credentials('test@example.com', '1234567')[0]).to eq(User.find_by(first_name:'Scott'))
+      end
+    end
+  end
+
 end
